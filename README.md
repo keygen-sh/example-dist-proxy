@@ -48,7 +48,6 @@ ngrok http 8080
 
 You can now make requests to any of the following routes:
 
-
 #### `/update/:platform/:extension/:version?license=:key`
 
 This will download an update release for a given platform depending on
@@ -66,6 +65,29 @@ for Keygen Dist.
 This will download a release by filename for a given platform. See [the
 download release endpoint](https://keygen.sh/docs/dist/#releases-download)
 for Keygen Dist.
+
+## Automatically detecting platform
+
+If you'd like to automatically detect a user's platform, that's as simple as
+implementing a little bit of extra logic using something like the [`express-useragent`](https://github.com/biggora/express-useragent)
+package:
+
+```js
+const userAgent = require('express-useragent')
+
+const ua = userAgent.parse(req.headers['user-agent'])
+let platform
+
+if (ua.isMac) {
+  platform = 'darwin'
+} else if (ua.isWindows) {
+  platform = 'win32'
+} else if (us.isLinux) {
+  platform = 'linux'
+} else {
+  // … handle other platforms
+}
+```
 
 ## Questions?
 
